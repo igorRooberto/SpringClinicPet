@@ -116,5 +116,6 @@ http://localhost:8080/swagger-ui.html
 - Implementar testes unitários e de integração  
 - Melhorar tratamento de exceções (Custom Exception Handler)  
 - Dockerizar a aplicação
+- Moldar o Front-end
 
 
