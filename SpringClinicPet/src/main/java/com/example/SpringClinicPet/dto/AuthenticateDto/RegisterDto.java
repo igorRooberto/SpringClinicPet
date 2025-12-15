@@ -6,5 +6,9 @@ public record RegisterDto(@NotBlank(message = "O login é obrigatório")
                           String login,
 
                           @NotBlank(message = "A senha é obrigatória")
-                          String password) {
+                          String password,
+
+                          @NotBlank(message = "O email é obrigatório")
+                          String email
+) {
 }

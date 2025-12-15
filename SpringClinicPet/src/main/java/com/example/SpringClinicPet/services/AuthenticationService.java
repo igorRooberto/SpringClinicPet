@@ -38,7 +38,13 @@ public class AuthenticationService {
         }
 
         String encryptedPassword = passwordEncoder.encode(data.password());
-        User newUser = new User(data.login(),encryptedPassword,UserRole.USER, true, null);
+        User newUser = new User(
+                data.login(),
+                encryptedPassword,
+                data.email(),
+                UserRole.USER,
+                true,
+                null);
 
         userRepository.save(newUser);
     }
@@ -49,7 +55,13 @@ public class AuthenticationService {
         }
 
         String encryptedPassword = passwordEncoder.encode(data.password());
-        User newUser = new User(data.login(),encryptedPassword,UserRole.VETERINARIAN, false, data.crvm());
+        User newUser = new User(
+                data.login(),
+                encryptedPassword,
+                data.email(),
+                UserRole.VETERINARIAN,
+                false,
+                data.crvm());
 
         userRepository.save(newUser);
     }
@@ -60,13 +72,19 @@ public class AuthenticationService {
         }
 
         String encryptedPassword = passwordEncoder.encode(data.password());
-        User newUser = new User(data.login(),encryptedPassword,UserRole.ADMIN, true, null);
+        User newUser = new User(
+                data.login(),
+                encryptedPassword,
+                data.email(),
+                UserRole.ADMIN,
+                true,
+                null);
 
         userRepository.save(newUser);
     }
 
     public LoginResponseDto login(AuthenticateDto data){
-        var usernamePassword =  new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        var usernamePassword =  new UsernamePasswordAuthenticationToken(data.loginOrEmail(), data.password());
         var authentication = authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((User) authentication.getPrincipal());

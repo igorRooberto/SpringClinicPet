@@ -36,16 +36,20 @@ public class User implements UserDetails {
     @Column(name = "crvm",unique = true, length = 20)
     private String crvm;
 
+    @Column(name = "email",nullable = false, unique = true)
+    private String email;
+
     @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY)
     private Set<Pet> pets = new HashSet<>();
 
     @OneToMany(mappedBy = "veterinarian",fetch = FetchType.LAZY)
     private Set<Appointment> appointmentsVeterinarian = new HashSet<>();
 
-    public User(String login, String password, UserRole role,Boolean enabled,String crvm) {
+    public User(String login, String password,String email, UserRole role,Boolean enabled,String crvm) {
         this.login = login;
         this.password = password;
         this.role = role;
+        this.email = email;
         this.enabled = enabled;
         this.crvm = crvm;
     }

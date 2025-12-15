@@ -18,6 +18,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     UserDetails findByLogin(String login);
 
+    @Query("SELECT u FROM User u WHERE u.login = :identifier OR u.email = :identifier")
+    UserDetails findByLoginOrEmail(@Param("identifier") String identifier);
+
     Optional<User> findUserByLogin(String login);
 
     @Query("SELECT u FROM User u WHERE u.role = :role AND u.enabled = false")

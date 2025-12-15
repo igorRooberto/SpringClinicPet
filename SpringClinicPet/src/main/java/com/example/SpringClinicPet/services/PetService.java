@@ -4,6 +4,7 @@ import com.example.SpringClinicPet.dto.AppointmentDto.AppointmentResponseDto;
 import com.example.SpringClinicPet.dto.PetDto.PetRequestDto;
 import com.example.SpringClinicPet.dto.PetDto.PetResponseDto;
 import com.example.SpringClinicPet.infra.security.UserSecurityHelper;
+import com.example.SpringClinicPet.mapper.PetMapper;
 import com.example.SpringClinicPet.model.Pet;
 import com.example.SpringClinicPet.model.User;
 import com.example.SpringClinicPet.model.enums.UserRole;
@@ -14,14 +15,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PetService {
 
     private final PetRepository petRepository;
     private final UserSecurityHelper userSecurityHelper;
+    private final PetMapper petMapper;
 
-    public PetService(PetRepository petRepository, UserSecurityHelper userSecurityHelper) {
+    public PetService(PetMapper petMapper, PetRepository petRepository, UserSecurityHelper userSecurityHelper) {
+        this.petMapper = petMapper;
         this.petRepository = petRepository;
         this.userSecurityHelper = userSecurityHelper;
     }
@@ -40,7 +44,7 @@ public class PetService {
         owner.addPet(pet);
         petRepository.save(pet);
 
-        return new PetResponseDto(pet.getId(),pet.getName(), pet.getBreed(), pet.getSpecies());
+        return petMapper.toResponseDto(pet);
     }
 
     public void deletePet(UUID petId){
@@ -67,11 +71,7 @@ public class PetService {
 
         List<Pet> pets = petRepository.findByOwnerAndEnabledTrue(owner);
 
-        return pets.stream().map(pet -> new PetResponseDto(
-                pet.getId(),
-                pet.getName(),
-                pet.getBreed(),
-                pet.getSpecies())).toList();
+        return pets.stream().map(petMapper::toResponseDto).collect(Collectors.toList());
     }
 
 }

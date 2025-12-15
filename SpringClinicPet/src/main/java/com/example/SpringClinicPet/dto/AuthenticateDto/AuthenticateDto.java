@@ -1,4 +1,4 @@
 package com.example.SpringClinicPet.dto.AuthenticateDto;
 
-public record AuthenticateDto(String login, String password) {
+public record AuthenticateDto(String loginOrEmail, String password) {
 }

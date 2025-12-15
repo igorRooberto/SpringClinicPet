@@ -25,12 +25,15 @@ public class AdminInitializer implements CommandLineRunner {
     @Value("${api.security.secret.adminPassword}")
     private String adminPassword;
 
+    @Value("${api.security.secret.adminEmail}")
+    private String adminEmail;
+
     @Override
     public void run(String... args) throws Exception {
 
         if(userRepository.findByLogin(adminLogin) == null){
 
-            User userAdmin = new User(adminLogin,passwordEncoder.encode(adminPassword), UserRole.ADMIN, true,null);
+            User userAdmin = new User(adminLogin,passwordEncoder.encode(adminPassword),adminEmail, UserRole.ADMIN, true,null);
             userRepository.save(userAdmin);
         }
 
